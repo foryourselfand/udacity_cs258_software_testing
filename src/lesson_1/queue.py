@@ -4,7 +4,7 @@ import array
 class Queue:
     def __init__(self, size_max):
         assert size_max > 0
-        self.max = size_max
+        self.size_max = size_max
         
         self.head = 0
         self.tail = 0
@@ -15,145 +15,118 @@ class Queue:
         return self.size == 0
     
     def full(self):
-        return self.size == self.max
+        return self.size == self.size_max
     
-    def enqueue(self, x):
-        if self.size == self.max:
+    def enqueue(self, element):
+        if self.size == self.size_max:
             return False
-        self.data[self.tail] = x
+        self.data[self.tail] = element
         self.tail += 1
         self.size += 1
-        if self.tail == self.max:
+        if self.tail == self.size_max:
             self.tail = 0
         return True
     
     def dequeue(self):
         if self.size == 0:
             return None
-        x = self.data[self.head]
+        element = self.data[self.head]
         self.size -= 1
         self.head += 1
-        if self.head == self.max:
+        if self.head == self.size_max:
             self.head = 0
-        return x
+        return element
 
 
 def test1():
-    q = Queue(3)
-    res = q.empty()
-    if not res:
-        print('test1 NOT OK')
-        return
+    queue = Queue(3)
     
-    res = q.enqueue(10)
-    if not res:
-        print('test1 NOT OK')
-        return
+    is_empty = queue.empty()
+    if not is_empty: return False
     
-    res = q.enqueue(11)
-    if not res:
-        print('test1 NOT OK')
-        return
+    is_added_1 = queue.enqueue(1)
+    if not is_added_1: return False
     
-    res = q.dequeue()
-    if res != 10:
-        print('test1 NOT OK')
-        return
+    is_added_2 = queue.enqueue(2)
+    if not is_added_2: return False
     
-    res = q.dequeue()
-    if res != 11:
-        print('test1 NOT OK')
-        return
+    element_1 = queue.dequeue()
+    if element_1 != 1: return False
     
-    res = q.empty()
-    if not res:
-        print('test1 NOT OK')
-        return
-    print('test1 OK')
+    element_2 = queue.dequeue()
+    if element_2 != 2: return False
+    
+    is_empty = queue.empty()
+    if not is_empty: return False
+    
+    return True
 
 
 def test2():
-    q = Queue(2)
+    queue = Queue(2)
     
-    res = q.empty()
-    if not res:
-        print('test2 NOT OK')
-        return
+    is_empty = queue.empty()
+    if not is_empty: return False
     
-    res = q.enqueue(1)
-    if not res:
-        print('test2 NOT OK')
-        return
+    was_added_1 = queue.enqueue(1)
+    if not was_added_1: return False
     
-    res = q.enqueue(2)
-    if not res:
-        print('test2 NOT OK')
-        return
+    was_added_2 = queue.enqueue(2)
+    if not was_added_2: return False
     
-    if q.tail != 0:
-        print('test2 NOT OK')
-        return
+    if queue.tail != 0: return False
     
-    res = q.enqueue(3)
-    if res:
-        print('test2 NOT OK')
-        return
+    was_added_3 = queue.enqueue(3)
+    if was_added_3: return False
     
-    print('test2 OK')
+    return True
 
 
 def test3():
-    q = Queue(2)
+    queue = Queue(2)
     
-    res = q.empty()
-    if not res:
-        print('test2 NOT OK')
-        return
+    is_empty = queue.empty()
+    if not is_empty: return False
     
-    res = q.dequeue()
-    if res:
-        print('test2 NOT OK')
-        return
+    element_0 = queue.dequeue()
+    if element_0: return False
     
-    res = q.enqueue(1)
-    res = q.enqueue(2)
+    was_added_1 = queue.enqueue(1)
+    was_added_2 = queue.enqueue(2)
     
-    res = q.dequeue()
-    if not res:
-        print('test2 NOT OK')
-        return
+    element_1 = queue.dequeue()
+    if not element_1: return False
     
-    res = q.dequeue()
-    if not res:
-        print('test2 NOT OK')
-        return
+    element_2 = queue.dequeue()
+    if not element_2: return False
     
-    if q.head != 0:
-        print('test2 NOT OK')
-        return
+    if queue.head != 0: return False
     
-    res = q.dequeue()
-    if res:
-        print('test2 NOT OK')
-        return
+    element_3 = queue.dequeue()
+    if element_3: return False
     
-    print('test3 OK')
+    return True
 
 
 def main():
     q = Queue(2)
-    c1 = q.enqueue(6)
-    c2 = q.enqueue(7)
-    c3 = q.enqueue(8)
-    c4 = q.dequeue()
-    c5 = q.dequeue()
-    c6 = q.dequeue()
+    is_added_1 = q.enqueue(6)
+    is_added_2 = q.enqueue(7)
+    is_added_3 = q.enqueue(8)
+    element_added_1 = q.dequeue()
+    element_added_2 = q.dequeue()
+    element_added_3 = q.dequeue()
     
-    print(c1, c2, c3, c4, c5, c6)
+    print(is_added_1, is_added_2, is_added_3,
+          element_added_1, element_added_2, element_added_3)
     
-    test1()
-    test2()
-    test3()
+    result_test1 = test1()
+    result_test2 = test2()
+    result_test3 = test3()
+    
+    print('test1 OK' if result_test1 else 'test1 NOT OK')
+    print('test2 OK' if result_test2 else 'test2 NOT OK')
+    print('test3 OK' if result_test3 else 'test3 NOT OK')
 
 
 if __name__ == '__main__':
